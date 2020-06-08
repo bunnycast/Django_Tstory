@@ -9,6 +9,7 @@ GENDER_CHOICES = (
     (2, 'Not to disclose')
 )
 
+
 class UserManager(BaseUserManager):
     def _create_user(self, email, username, password, gender=2, **extra_fields):
         """
