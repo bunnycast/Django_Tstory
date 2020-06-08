@@ -12,7 +12,7 @@ import json
 def posts_list(request):
     posts = Post.objects.order_by('-created_at')
 
-    return render(request, 'blogs/posts_list.html',  context={'posts':posts})
+    return render(request, 'blogs/posts_list.html',  context={'posts': posts})
 
 
 def post_detail(request, post_id):
@@ -23,7 +23,7 @@ def post_detail(request, post_id):
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
 
-    return render(request, 'blogs/post_detail.html', context={'post':post, 'comments':comments, 'is_liked':is_liked, 'total_likes':post.total_likes()})
+    return render(request, 'blogs/post_detail.html', context={'post': post, 'comments': comments, 'is_liked': is_liked, 'total_likes': post.total_likes()})
 
 
 @login_required
@@ -58,8 +58,8 @@ def post_write(request):
             post = Post.objects.create(user=request.user, title=title, content=content, image=image)
 
             return redirect(reverse('post_detail', kwargs={'post_id': post.id}))
-    
-    return render(request, 'blogs/post_write.html', {'user':request.user, 'errors':errors})
+
+    return render(request, 'blogs/post_write.html', {'user': request.user, 'errors': errors})
 
 
 @login_required
@@ -76,8 +76,8 @@ def comment_write(request):
             comment = Comment.objects.create(user=request.user, post_id=post_id, content=content)
 
             return redirect(reverse('post_detail', kwargs={'post_id': comment.post.id}))
-    
-    return render(request, 'blogs/post_detail.html', {'user':request.user, 'errors':errors} )
+
+    return render(request, 'blogs/post_detail.html', {'user': request.user, 'errors': errors})
 
 
 
@@ -85,12 +85,12 @@ def comment_write(request):
 @require_POST
 def like_toggle(request):
     if request.method == 'POST':
-        user = request.user 
+        user = request.user
         post_id = request.POST.get('pk', '')
         post = Post.objects.get(pk=post_id)
 
-        if post.like.filter(id=user.id).exists(): 
-            post.like.remove(user) 
+        if post.like.filter(id=user.id).exists():
+            post.like.remove(user)
             message = 'Dislike'
         else:
             post.like.add(user)
